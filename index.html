@@ -2,31 +2,24 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <!-- Pengaturan dasar website -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta
         name="description"
-        content="StudyMate AI adalah asisten belajar digital untuk membantu siswa mengatur jadwal, menyimpan catatan, dan berlatih soal."
+        content="StudyMate AI membantu siswa mengatur catatan, berlatih soal, dan belajar dengan bantuan AI."
     >
 
     <title>StudyMate AI - Teman Belajar Digital</title>
 
-    <!-- Menghubungkan file CSS -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Menghubungkan file JavaScript -->
     <script src="script.js" defer></script>
 </head>
 
 <body>
 
-    <!-- ==============================
-         SIDEBAR / MENU NAVIGASI
-    =============================== -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
-
         <div class="logo">
             <div class="logo-icon">S</div>
             <div class="logo-text">
@@ -38,49 +31,24 @@
         <nav class="navigation">
             <p class="menu-label">MENU UTAMA</p>
 
-            <button
-                class="nav-link active"
-                data-page="dashboard"
-                type="button"
-            >
-                <span class="nav-icon">⌂</span>
-                Dashboard
+            <button class="nav-link active" data-page="dashboard" type="button">
+                <span class="nav-icon">⌂</span> Dashboard
             </button>
 
-            <button
-                class="nav-link"
-                data-page="notes"
-                type="button"
-            >
-                <span class="nav-icon">▤</span>
-                Catatan Saya
+            <button class="nav-link" data-page="notes" type="button">
+                <span class="nav-icon">▤</span> Catatan Saya
             </button>
 
-            <button
-                class="nav-link"
-                data-page="quiz"
-                type="button"
-            >
-                <span class="nav-icon">✓</span>
-                Kuis Interaktif
+            <button class="nav-link" data-page="quiz" type="button">
+                <span class="nav-icon">✓</span> Kuis Interaktif
             </button>
 
-            <button
-                class="nav-link"
-                data-page="flashcards"
-                type="button"
-            >
-                <span class="nav-icon">▣</span>
-                Flashcard
+            <button class="nav-link" data-page="flashcards" type="button">
+                <span class="nav-icon">▣</span> Flashcard
             </button>
 
-            <button
-                class="nav-link"
-                data-page="assistant"
-                type="button"
-            >
-                <span class="nav-icon">✧</span>
-                StudyMate Assistant
+            <button class="nav-link" data-page="assistant" type="button">
+                <span class="nav-icon">✧</span> StudyMate Assistant
             </button>
         </nav>
 
@@ -91,16 +59,11 @@
                 <p>Terus semangat belajar!</p>
             </div>
         </div>
-
     </aside>
 
-
-    <!-- ==============================
-         KONTEN UTAMA WEBSITE
-    =============================== -->
+    <!-- KONTEN UTAMA -->
     <main class="main-content">
 
-        <!-- HEADER -->
         <header class="topbar">
             <div>
                 <p class="breadcrumb">Workspace / Belajar</p>
@@ -116,28 +79,18 @@
             </div>
         </header>
 
-
-        <!-- ==============================
-             HALAMAN DASHBOARD
-        =============================== -->
+        <!-- DASHBOARD -->
         <section id="dashboard" class="page active">
-
             <div class="welcome-banner">
                 <div class="welcome-text">
                     <p class="welcome-label">YOUR LEARNING SPACE</p>
-
                     <h2>Halo, Pelajar! 👋</h2>
-
                     <p>
                         Siap belajar hal baru hari ini?
                         Mari tingkatkan kemampuanmu bersama StudyMate.
                     </p>
 
-                    <button
-                        class="primary-button"
-                        data-go="notes"
-                        type="button"
-                    >
+                    <button class="primary-button" data-go="notes" type="button">
                         Mulai Belajar
                     </button>
                 </div>
@@ -149,8 +102,6 @@
                 </div>
             </div>
 
-
-            <!-- KARTU STATISTIK -->
             <div class="section-heading">
                 <div>
                     <h2>Ringkasan Belajarmu</h2>
@@ -159,7 +110,6 @@
             </div>
 
             <div class="stats-grid">
-
                 <article class="stat-card">
                     <div class="stat-icon icon-blue">▤</div>
                     <p>Total Catatan</p>
@@ -187,13 +137,9 @@
                     <h3 id="learning-progress">0%</h3>
                     <span>Progres aktivitasmu</span>
                 </article>
-
             </div>
 
-
-            <!-- AKTIVITAS DAN REKOMENDASI -->
             <div class="dashboard-grid">
-
                 <section class="content-card activity-card">
                     <div class="card-heading">
                         <div>
@@ -203,18 +149,13 @@
                     </div>
 
                     <div class="activity-list">
-
                         <div class="activity-item">
                             <div class="activity-icon icon-blue">▤</div>
                             <div class="activity-description">
                                 <h3>Buat catatan baru</h3>
                                 <p>Simpan materi pelajaranmu.</p>
                             </div>
-                            <button
-                                class="text-button"
-                                data-go="notes"
-                                type="button"
-                            >
+                            <button class="text-button" data-go="notes" type="button">
                                 Buka →
                             </button>
                         </div>
@@ -225,11 +166,7 @@
                                 <h3>Latihan soal</h3>
                                 <p>Uji pemahamanmu melalui kuis.</p>
                             </div>
-                            <button
-                                class="text-button"
-                                data-go="quiz"
-                                type="button"
-                            >
+                            <button class="text-button" data-go="quiz" type="button">
                                 Buka →
                             </button>
                         </div>
@@ -238,54 +175,32 @@
                             <div class="activity-icon icon-purple">✧</div>
                             <div class="activity-description">
                                 <h3>Tanya asisten</h3>
-                                <p>Pelajari topik dengan cara sederhana.</p>
+                                <p>Pelajari topik dengan bantuan AI.</p>
                             </div>
-                            <button
-                                class="text-button"
-                                data-go="assistant"
-                                type="button"
-                            >
+                            <button class="text-button" data-go="assistant" type="button">
                                 Buka →
                             </button>
                         </div>
-
                     </div>
                 </section>
 
-
                 <section class="content-card recommendation-card">
                     <div class="assistant-badge">✧</div>
-
-                    <p class="recommendation-label">
-                        STUDYMATE SUGGESTION
-                    </p>
-
+                    <p class="recommendation-label">STUDYMATE SUGGESTION</p>
                     <h2>Belajar sedikit, konsisten setiap hari.</h2>
-
                     <p>
                         Mulailah dengan satu topik, buat ringkasan,
                         lalu uji pemahamanmu melalui latihan soal.
                     </p>
-
-                    <button
-                        class="secondary-button"
-                        data-go="assistant"
-                        type="button"
-                    >
+                    <button class="secondary-button" data-go="assistant" type="button">
                         Coba Assistant
                     </button>
                 </section>
-
             </div>
-
         </section>
 
-
-        <!-- ==============================
-             HALAMAN CATATAN
-        =============================== -->
+        <!-- CATATAN -->
         <section id="notes" class="page" hidden>
-
             <div class="page-heading">
                 <p class="breadcrumb">Workspace / Catatan</p>
                 <h2>Catatan Saya</h2>
@@ -296,7 +211,6 @@
                 <h3>Buat Catatan Baru</h3>
 
                 <form id="note-form">
-
                     <div class="form-group">
                         <label for="note-title">Judul catatan</label>
                         <input
@@ -333,7 +247,6 @@
                     <button class="primary-button" type="submit">
                         Simpan Catatan
                     </button>
-
                 </form>
             </section>
 
@@ -351,15 +264,10 @@
                     </p>
                 </div>
             </section>
-
         </section>
 
-
-        <!-- ==============================
-             HALAMAN KUIS
-        =============================== -->
+        <!-- KUIS -->
         <section id="quiz" class="page" hidden>
-
             <div class="page-heading">
                 <p class="breadcrumb">Workspace / Latihan</p>
                 <h2>Kuis Interaktif</h2>
@@ -367,7 +275,6 @@
             </div>
 
             <section class="content-card quiz-card">
-
                 <div class="quiz-header">
                     <div class="quiz-icon">✓</div>
                     <div>
@@ -377,39 +284,22 @@
                 </div>
 
                 <div class="quiz-progress">
-                    <span id="quiz-question-count">
-                        Soal 0 dari 0
-                    </span>
+                    <span id="quiz-question-count">Soal 0 dari 0</span>
                     <span id="quiz-score">Skor: 0</span>
                 </div>
 
-                <div
-                    id="quiz-container"
-                    aria-live="polite"
-                >
-                    <p>
-                        Tekan tombol di bawah untuk memulai latihan.
-                    </p>
+                <div id="quiz-container" aria-live="polite">
+                    <p>Tekan tombol di bawah untuk memulai latihan.</p>
                 </div>
 
-                <button
-                    class="primary-button"
-                    id="start-quiz"
-                    type="button"
-                >
+                <button class="primary-button" id="start-quiz" type="button">
                     Mulai Kuis
                 </button>
-
             </section>
-
         </section>
 
-
-        <!-- ==============================
-             HALAMAN FLASHCARD
-        =============================== -->
+        <!-- FLASHCARD -->
         <section id="flashcards" class="page" hidden>
-
             <div class="page-heading">
                 <p class="breadcrumb">Workspace / Hafalan</p>
                 <h2>Flashcard</h2>
@@ -417,7 +307,6 @@
             </div>
 
             <section class="content-card flashcard-section">
-
                 <p class="flashcard-instruction">
                     Klik kartu untuk melihat jawabannya.
                 </p>
@@ -432,49 +321,32 @@
                     <span id="flashcard-text">
                         Apa yang dimaksud dengan fotosintesis?
                     </span>
-                    <span class="flashcard-hint">
-                        Klik untuk membalik kartu ↻
-                    </span>
+                    <span class="flashcard-hint">Klik untuk membalik kartu ↻</span>
                 </button>
 
                 <div class="flashcard-controls">
-                    <button
-                        class="secondary-button"
-                        id="previous-card"
-                        type="button"
-                    >
+                    <button class="secondary-button" id="previous-card" type="button">
                         ← Sebelumnya
                     </button>
 
                     <span id="flashcard-count">1 / 3</span>
 
-                    <button
-                        class="primary-button"
-                        id="next-card"
-                        type="button"
-                    >
+                    <button class="primary-button" id="next-card" type="button">
                         Berikutnya →
                     </button>
                 </div>
-
             </section>
-
         </section>
 
-
-        <!-- ==============================
-             HALAMAN STUDYMATE ASSISTANT
-        =============================== -->
+        <!-- ASISTEN AI -->
         <section id="assistant" class="page" hidden>
-
             <div class="page-heading">
                 <p class="breadcrumb">Workspace / Asisten Belajar</p>
                 <h2>StudyMate Assistant</h2>
-                <p>Temukan jawaban dari materi belajar yang tersedia.</p>
+                <p>Tanyakan materi pelajaran dan dapatkan penjelasan dari AI.</p>
             </div>
 
             <section class="content-card assistant-card">
-
                 <div class="assistant-welcome">
                     <div class="assistant-large-icon">✧</div>
                     <h3>Halo! Aku StudyMate Assistant.</h3>
@@ -484,6 +356,7 @@
                     </p>
                 </div>
 
+                <!-- Tombol saran: JavaScript perlu mengirimnya ke API -->
                 <div class="suggested-questions">
                     <p>Coba tanyakan:</p>
 
@@ -512,18 +385,19 @@
                     </button>
                 </div>
 
+                <!-- Area percakapan -->
                 <div
                     id="chat-messages"
                     class="chat-messages"
                     aria-live="polite"
+                    aria-relevant="additions text"
                 >
                     <div class="chat-message assistant-message">
-                        <p>
-                            Aku siap membantu! Silakan ketik pertanyaanmu.
-                        </p>
+                        <p>Aku siap membantu! Silakan ketik pertanyaanmu.</p>
                     </div>
                 </div>
 
+                <!-- Form ini mengirim pertanyaan ke backend /api/chat -->
                 <form id="chat-form" class="chat-form">
                     <label for="chat-input" class="visually-hidden">
                         Pertanyaan untuk StudyMate Assistant
@@ -532,8 +406,10 @@
                     <input
                         type="text"
                         id="chat-input"
+                        name="message"
                         placeholder="Tulis pertanyaanmu di sini..."
                         autocomplete="off"
+                        maxlength="4000"
                         required
                     >
 
@@ -543,14 +419,11 @@
                 </form>
 
                 <p class="assistant-disclaimer">
-                    Versi prototipe menggunakan pencocokan kata kunci
-                    dan materi yang telah disiapkan, bukan AI generatif.
+                    Jawaban AI dapat keliru. Periksa kembali informasi penting
+                    dan jangan masukkan data pribadi atau informasi rahasia.
                 </p>
-
             </section>
-
         </section>
-
 
         <!-- FOOTER -->
         <footer class="main-footer">
@@ -561,6 +434,5 @@
         </footer>
 
     </main>
-
 </body>
 </html>
