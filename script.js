@@ -26,16 +26,20 @@ function saveData(key, data) {
 // ==========================================
 
 function showPage(pageName) {
+    // Sembunyikan semua halaman terlebih dahulu
     $$(".page").forEach((page) => {
         page.classList.remove("active");
+        page.hidden = true;
     });
-
+    // Cari halaman yang ingin ditampilkan
     const targetPage = $("#" + pageName);
-
     if (targetPage) {
+        targetPage.hidden = false;
         targetPage.classList.add("active");
+    } else {
+        console.error("Halaman tidak ditemukan:", pageName);
     }
-
+    // Perbarui menu navigasi yang aktif
     $$(".nav-link").forEach((link) => {
         link.classList.toggle(
             "active",
