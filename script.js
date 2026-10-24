@@ -414,81 +414,162 @@ $("#previous-card")?.addEventListener("click", () => {
     renderFlashcard();
 });
 
-// ==========================================
-// 6. ASISTEN BELAJAR BERBASIS KATA KUNCI
-// ==========================================
 
-function getAssistantResponse(message) {
-    const text = message.toLowerCase();
+ // ==========================================
+ // 6. STUDYMATE AI MENGGUNAKAN API
+ // ==========================================
 
-    if (text.includes("html")) {
-        return "HTML adalah bahasa markup untuk membuat struktur website, seperti judul, paragraf, gambar, dan tautan.";
-    }
-
-    if (text.includes("css")) {
-        return "CSS digunakan untuk mempercantik website, misalnya mengatur warna, ukuran teks, jarak, dan tata letak.";
-    }
-
-    if (text.includes("javascript") || text.includes(" js ")) {
-        return "JavaScript membuat website interaktif. Contohnya, tombol yang bisa diklik, kuis, dan formulir.";
-    }
-
-    if (text.includes("belajar") || text.includes("tips")) {
-        return "Tips belajar: tentukan tujuan kecil, pelajari satu materi pada satu waktu, buat catatan, lalu uji pemahamanmu dengan kuis.";
-    }
-
-    if (text.includes("matematika") || text.includes("matematika")) {
-        return "Untuk belajar matematika, pahami konsepnya terlebih dahulu, lihat contoh soal, lalu berlatih dari soal sederhana ke soal yang lebih menantang.";
-    }
-
-    if (text.includes("ai") || text.includes("kecerdasan buatan")) {
-        return "AI adalah teknologi yang membantu komputer menjalankan tugas seperti memahami bahasa, mengenali pola, dan membuat prediksi.";
-    }
-
-    if (text.includes("halo") || text.includes("hai")) {
-        return "Halo! Aku StudyMate. Tanyakan sesuatu tentang HTML, CSS, JavaScript, AI, atau tips belajar.";
-    }
-
-    return "Aku masih memiliki jawaban sederhana berbasis kata kunci. Coba tanyakan tentang HTML, CSS, JavaScript, AI, atau tips belajar.";
-}
-
+/**
+ * Menambahkan pesan ke area percakapan.
+ * Sender "user" untuk pengguna, "bot" untuk AI.
+ */
 function addChatMessage(message, sender) {
     const container = $("#chat-messages");
-    if (!container) return;
+    if (!container) return null;
 
     const bubble = document.createElement("div");
-    bubble.className = sender === "user" ? "user-message" : "bot-message";
-    bubble.textContent = message;
 
+    bubble.classList.add("chat-message");
+
+    if (sender === "user") {
+        bubble.classList.add("user-message");
+    } else {
+        bubble.classList.add("assistant-message");
+    }
+
+    const paragraph = document.createElement("p");
+    paragraph.textContent = message;
+
+    bubble.appendChild(paragraph);
     container.appendChild(bubble);
+
     container.scrollTop = container.scrollHeight;
+
+    return bubble;
 }
 
-$("#chat-form")?.addEventListener("submit", (event) => {
+/**
+ * Mengirim pertanyaan ke backend.
+ * Backend akan menghubungi API AI secara aman.
+ */
+async function sendMessageToAI(message) {
+    const form = $("#chat-form");
+    const input = $("#chat-input");
+    const sendButton = form?.querySelector('button[type="submit"]');
+
+    if (!message || !form || !input) return;
+
+    // Cegah pengiriman berulang ketika AI masih menjawab.
+    if (form.dataset.sending === "true") return;
+
+    form.dataset.sending = "true";
+
+    if (sendButton) {
+        sendButton.disabled = true;
+        sendButton.textContent = "Memproses...";
+    }
+
+    addChatMessage(message, "user");
+
+    // Kosongkan input setelah pertanyaan dikirim.
+    input.value = "";
+
+    const loadingBubble = addChatMessage(
+        "StudyMate sedang berpikir...",
+        "bot"
+    );
+
+    try {
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: message
+            })
+        });
+
+        // Baca jawaban dari backend.
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.error || `Permintaan gagal (${response.status}).`
+            );
+        }
+
+        if (typeof data.reply !== "string" || !data.reply.trim()) {
+            throw new Error("AI tidak memberikan jawaban yang valid.");
+        }
+
+        // Hapus indikator proses, lalu tampilkan jawaban AI.
+        loadingBubble?.remove();
+        addChatMessage(data.reply, "bot");
+
+    } catch (error) {
+        loadingBubble?.remove();
+
+        addChatMessage(
+            "Maaf, StudyMate belum bisa menjawab. Periksa apakah server berjalan dan pengaturan API sudah benar, lalu coba lagi.",
+            "bot"
+        );
+
+        console.error("Kesalahan StudyMate API:", error.message);
+
+    } finally {
+        form.dataset.sending = "false";
+
+        if (sendButton) {
+            sendButton.disabled = false;
+            sendButton.textContent = "Kirim";
+        }
+
+        input.focus();
+    }
+}
+
+// Tangani pengiriman formulir chat.
+const chatForm = $("#chat-form");
+
+chatForm?.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const input = $("#chat-input");
-    if (!input) return;
+    const message = input?.value.trim();
 
-    const message = input.value.trim();
     if (!message) return;
 
-    addChatMessage(message, "user");
-    addChatMessage(getAssistantResponse(message), "bot");
-
-    input.value = "";
-    input.focus();
+    sendMessageToAI(message);
 });
 
+// Tombol saran mengirim pertanyaan yang dipilih ke API.
 $$(".suggestion-chip").forEach((chip) => {
     chip.addEventListener("click", () => {
         const question = chip.dataset.question;
+
         if (!question) return;
 
-        addChatMessage(question, "user");
-        addChatMessage(getAssistantResponse(question), "bot");
+        const form = $("#chat-form");
+        const input = $("#chat-input");
+
+        if (!form || !input) return;
+
+        // Abaikan klik jika pertanyaan sebelumnya masih diproses.
+        if (form.dataset.sending === "true") return;
+
+        input.value = question;
+
+        // Gunakan formulir yang sama agar pertanyaan masuk ke API.
+        if (typeof form.requestSubmit === "function") {
+            form.requestSubmit();
+        } else {
+            sendMessageToAI(question);
+        }
     });
 });
+
+
 
 // ==========================================
 // 7. DASHBOARD DAN STATISTIK
