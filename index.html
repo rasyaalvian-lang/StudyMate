@@ -266,37 +266,38 @@
             </section>
         </section>
 
-        <!-- KUIS -->
-        <section id="quiz" class="page" hidden>
-            <div class="page-heading">
-                <p class="breadcrumb">Workspace / Latihan</p>
-                <h2>Kuis Interaktif</h2>
-                <p>Uji pemahamanmu melalui soal pilihan ganda.</p>
+       
+<!-- KUIS -->
+<section id="quiz" class="page" hidden>
+    <div class="page-heading">
+        <p class="breadcrumb">Workspace / Latihan</p>
+        <h2>Kuis Interaktif</h2>
+        <p>Uji pemahamanmu melalui soal pilihan ganda.</p>
+    </div>
+
+    <section class="content-card quiz-card">
+        <div class="quiz-header">
+            <div class="quiz-icon">✓</div>
+            <div>
+                <h3>Latihan Pengetahuan Umum</h3>
+                <p>Jawab pertanyaan dan lihat hasilmu.</p>
             </div>
+        </div>
 
-            <section class="content-card quiz-card">
-                <div class="quiz-header">
-                    <div class="quiz-icon">✓</div>
-                    <div>
-                        <h3>Latihan Pengetahuan Umum</h3>
-                        <p>Jawab pertanyaan dan lihat hasilmu.</p>
-                    </div>
-                </div>
+        <div class="quiz-progress">
+            <span id="quiz-question-count">Soal 0 dari 0</span>
+            <span id="quiz-score">Skor: 0</span>
+        </div>
 
-                <div class="quiz-progress">
-                    <span id="quiz-question-count">Soal 0 dari 0</span>
-                    <span id="quiz-score">Skor: 0</span>
-                </div>
+        <div id="quiz-container" aria-live="polite">
+            <p>Tekan tombol di bawah untuk memulai latihan.</p>
+        </div>
 
-                <div id="quiz-container" aria-live="polite">
-                    <p>Tekan tombol di bawah untuk memulai latihan.</p>
-                </div>
-
-                <button class="primary-button" id="start-quiz" type="button">
-                    Mulai Kuis
-                </button>
-            </section>
-        </section>
+        <button class="primary-button" id="start-quiz" type="button">
+            Mulai Kuis
+        </button>
+    </section>
+</section>
 
         <!-- FLASHCARD -->
         <section id="flashcards" class="page" hidden>
