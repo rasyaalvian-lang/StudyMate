@@ -255,7 +255,7 @@ const quizQuestions = [
         options: ["Lalai", "Pandai", "Lambat", "Lemah"],
         answer: 1,
         explanation: "Cerdas memiliki makna yang dekat dengan pandai atau pintar."
-    }
+    },
     
 {
     // ===== IPA (1-5) =====
