@@ -330,35 +330,35 @@ const quizQuestions = [
     },
     {
         // ===== MATEMATIKA (11-15) =====
-        subject : "MATEMATIKA",
+        subject : "Matematika",
         question: "Hasil dari 15 × 6 adalah ...",
         options: ["80", "85", "90", "95"],
         answer: 2,
         explanation: "15 × 6 = 90."
     },
     {
-        subject : "MATEMATIKA",
+        subject : "Matematika",
         question: "Hasil dari 144 ÷ 12 adalah ...",
         options: ["10", "11", "12", "14"],
         answer: 2,
         explanation: "144 dibagi 12 sama dengan 12."
     },
     {
-        subject : "MATEMATIKA",
+        subject : "Matematika",
         question: "Jika x + 7 = 15, nilai x adalah ...",
         options: ["6", "7", "8", "9"],
         answer: 2,
         explanation: "Kurangi kedua ruas dengan 7: x = 15 - 7 = 8."
     },
     {
-        subject : "MATEMATIKA",
+        subject : "Matematika",
         question: "Luas persegi dengan panjang sisi 9 cm adalah ...",
         options: ["18 cm²", "36 cm²", "72 cm²", "81 cm²"],
         answer: 3,
         explanation: "Luas persegi = sisi × sisi = 9 × 9 = 81 cm²."
     },
     {
-        subject : "MATEMATIKA",
+        subject : "Matematika",
         question: "Hasil dari 3/4 + 1/4 adalah ...",
         options: ["1/2", "1", "1 1/2", "2"],
         answer: 1,
@@ -366,14 +366,14 @@ const quizQuestions = [
     },
     {
         // ===== BAHASA INGGRIS (16-20) =====
-        subject : "BAHASA INGGRIS",
+        subject : "Bahasa Inggris",
         question: 'What is the English word for "buku"?',
         options: ["Pen", "Table", "Book", "Chair"],
         answer: 2,
         explanation: '"Buku" dalam bahasa Inggris adalah "book".'
     },
     {
-        subject : "BAHASA INGGRIS",
+        subject : "Bahasa Inggris",
         question: 'Choose the correct sentence: "Saya seorang siswa."',
         options: ["I are a student.","I am a student.","I is a student.",
                   "I be a student."],
@@ -381,21 +381,21 @@ const quizQuestions = [
         explanation: '"I am a student" berarti "Saya seorang siswa."'
     },
     {
-        subject : "BAHASA INGGRIS",
+        subject : "Bahasa Inggris",
         question: 'What is the past tense of "go"?',
         options: ["Goed", "Going", "Goes", "Went"],
         answer: 3,
         explanation: 'Bentuk lampau (simple past) dari "go" adalah "went".'
     },
     {
-        subject : "BAHASA INGGRIS",
+        subject : "Bahasa Inggris",
         question: 'What is the opposite of "big"?',
         options: ["Tall", "Small", "Long", "Wide"],
         answer: 1,
         explanation: '"Small" berarti kecil dan merupakan lawan kata "big" (besar).'
     },
     {
-        subject : "BAHASA INGGRIS",
+        subject : "Bahasa Inggris",
         question: 'Complete the sentence: "She ___ a student."',
         options: ["am", "are", "is", "be"],
         answer: 2,
