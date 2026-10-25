@@ -1,60 +1,95 @@
 
+/* ========================================
+   STUDYMATE AI - SCRIPT.JS
+   Interaksi website tanpa API dan database
+======================================== */
+
 "use strict";
 
-// ==========================================
-// 1. FUNGSI DASAR
-// ==========================================
+/* ========================================
+   1. FUNGSI PENYIMPANAN LOCALSTORAGE
+======================================== */
 
-const $ = (selector) => document.querySelector(selector);
-const $$ = (selector) => document.querySelectorAll(selector);
+const STORAGE_KEYS = {
+    notes: "studymate_notes",
+    quizCount: "studymate_quiz_count",
+    quizProgress: "studymate_quiz_progress"
+};
 
 function loadData(key, fallback) {
     try {
         const saved = localStorage.getItem(key);
-        return saved ? JSON.parse(saved) : fallback;
+        return saved === null ? fallback : JSON.parse(saved);
     } catch (error) {
+        console.warn("Data tidak dapat dibaca:", error);
         return fallback;
     }
 }
 
-function saveData(key, data) {
+function saveData(key, value) {
     try {
-        localStorage.setItem(key, JSON.stringify(data));
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
     } catch (error) {
-        console.error("Gagal menyimpan data:", error);
+        console.error("Data tidak dapat disimpan:", error);
+        alert("Data tidak dapat disimpan. Periksa pengaturan penyimpanan browser.");
+        return false;
     }
 }
 
-// ==========================================
-// 2. NAVIGASI HALAMAN
-// ==========================================
+let notes = loadData(STORAGE_KEYS.notes, []);
+if (!Array.isArray(notes)) notes = [];
 
-function showPage(pageName) {
+let quizCount = Number(loadData(STORAGE_KEYS.quizCount, 0)) || 0;
+let quizProgress = Number(loadData(STORAGE_KEYS.quizProgress, 0)) || 0;
+
+
+/* ========================================
+   2. UTILITAS DOM
+======================================== */
+
+const $ = (selector, parent = document) => parent.querySelector(selector);
+const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
+
+function createElement(tag, className, text) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+}
+
+
+/* ========================================
+   3. NAVIGASI ANTARHALAMAN
+======================================== */
+
+function showPage(pageId) {
+    const targetPage = document.getElementById(pageId);
+    if (!targetPage || !targetPage.classList.contains("page")) return;
+
     $$(".page").forEach((page) => {
-        page.classList.remove("active");
-        page.hidden = true;
+        const isActive = page.id === pageId;
+        page.classList.toggle("active", isActive);
+        page.hidden = !isActive;
     });
 
-    const targetPage = $("#" + pageName);
+    $$(".nav-link").forEach((button) => {
+        const isActive = button.dataset.page === pageId;
+        button.classList.toggle("active", isActive);
 
-    if (targetPage) {
-        targetPage.hidden = false;
-        targetPage.classList.add("active");
-    } else {
-        console.error("Halaman tidak ditemukan:", pageName);
-    }
-
-    $$(".nav-link").forEach((link) => {
-        link.classList.toggle(
-            "active",
-            link.dataset.page === pageName
-        );
+        if (isActive) {
+            button.setAttribute("aria-current", "page");
+        } else {
+            button.removeAttribute("aria-current");
+        }
     });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-$$(".nav-link").forEach((link) => {
-    link.addEventListener("click", () => {
-        showPage(link.dataset.page);
+$$(".nav-link").forEach((button) => {
+    button.addEventListener("click", () => {
+        showPage(button.dataset.page);
     });
 });
 
@@ -64,116 +99,533 @@ $$("[data-go]").forEach((button) => {
     });
 });
 
-// ==========================================
-// 3. FITUR CATATAN BELAJAR
-// ==========================================
 
-let notes = loadData("studymate_notes", []);
+/* ========================================
+   4. CATATAN DIGITAL
+======================================== */
+
+const noteForm = $("#note-form");
+const noteTitleInput = $("#note-title");
+const noteSubjectInput = $("#note-subject");
+const noteContentInput = $("#note-content");
+const notesList = $("#notes-list");
+
 let editingNoteId = null;
 
-function renderNotes() {
-    const container = $("#notes-list");
-    if (!container) return;
+function resetNoteForm() {
+    noteForm.reset();
+    editingNoteId = null;
 
-    container.replaceChildren();
+    const submitButton = $('button[type="submit"]', noteForm);
+    if (submitButton) submitButton.textContent = "Simpan Catatan";
+}
+
+function renderNotes() {
+    notesList.replaceChildren();
 
     if (notes.length === 0) {
-        const message = document.createElement("p");
-        message.className = "empty-state";
-        message.textContent =
-            "Belum ada catatan. Yuk, buat catatan pertamamu!";
-        container.appendChild(message);
+        notesList.appendChild(
+            createElement(
+                "p",
+                "empty-state",
+                "Belum ada catatan. Yuk, buat catatan pertamamu!"
+            )
+        );
+        updateDashboard();
         return;
     }
 
     notes.forEach((note) => {
-        const card = document.createElement("article");
-        card.className = "note-card";
+        const card = createElement("article", "note-item");
+        const subject = createElement("span", "note-subject", note.subject);
+        const title = createElement("h4", "", note.title);
+        const content = createElement("p", "note-content", note.content);
+        const actions = createElement("div", "note-actions");
 
-        const title = document.createElement("h3");
-        title.textContent = note.title;
-
-        const subject = document.createElement("p");
-        subject.textContent =
-            "Mata pelajaran: " + note.subject;
-
-        const content = document.createElement("p");
-        content.textContent = note.content;
-
-        const editButton = document.createElement("button");
+        const editButton = createElement("button", "", "Edit");
         editButton.type = "button";
-        editButton.textContent = "Edit";
-
         editButton.addEventListener("click", () => {
-            $("#note-title").value = note.title;
-            $("#note-subject").value = note.subject;
-            $("#note-content").value = note.content;
-
             editingNoteId = note.id;
-            showPage("notes");
-            $("#note-title").focus();
+            noteTitleInput.value = note.title;
+            noteSubjectInput.value = note.subject;
+            noteContentInput.value = note.content;
+
+            const submitButton = $('button[type="submit"]', noteForm);
+            if (submitButton) submitButton.textContent = "Perbarui Catatan";
+
+            noteForm.scrollIntoView({ behavior: "smooth", block: "start" });
+            noteTitleInput.focus();
         });
 
-        const deleteButton = document.createElement("button");
+        const deleteButton = createElement("button", "delete-note", "Hapus");
         deleteButton.type = "button";
-        deleteButton.textContent = "Hapus";
-
         deleteButton.addEventListener("click", () => {
-            notes = notes.filter(
-                (item) => item.id !== note.id
+            const confirmed = window.confirm(
+                `Hapus catatan "${note.title}"?`
             );
+            if (!confirmed) return;
 
-            saveData("studymate_notes", notes);
+            notes = notes.filter((item) => item.id !== note.id);
+            saveData(STORAGE_KEYS.notes, notes);
+
+            if (editingNoteId === note.id) resetNoteForm();
             renderNotes();
-            updateDashboard();
         });
 
-        card.append(
-            title,
-            subject,
-            content,
-            editButton,
-            deleteButton
-        );
-
-        container.appendChild(card);
+        actions.append(editButton, deleteButton);
+        card.append(subject, title, content, actions);
+        notesList.appendChild(card);
     });
+
+    updateDashboard();
 }
 
-const noteForm = $("#note-form");
-
-noteForm?.addEventListener("submit", (event) => {
+noteForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const title = $("#note-title").value.trim();
-    const subject = $("#note-subject").value.trim();
-    const content = $("#note-content").value.trim();
+    const title = noteTitleInput.value.trim();
+    const subject = noteSubjectInput.value;
+    const content = noteContentInput.value.trim();
 
     if (!title || !subject || !content) {
-        alert("Lengkapi semua kolom catatan terlebih dahulu.");
+        alert("Silakan lengkapi semua kolom catatan.");
         return;
     }
 
     if (editingNoteId !== null) {
         notes = notes.map((note) =>
             note.id === editingNoteId
-                ? { ...note, title, subject, content }
+                ? {
+                    ...note,
+                    title,
+                    subject,
+                    content,
+                    updatedAt: new Date().toISOString()
+                }
                 : note
         );
     } else {
         notes.unshift({
-            id: Date.now(),
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             title,
             subject,
-            content
+            content,
+            createdAt: new Date().toISOString()
         });
     }
 
-    saveData("studymate_notes", notes);
-
-    noteForm.reset();
-    editingNoteId = null;
-
-    renderNotes();
-    updateDashboard();
+    if (saveData(STORAGE_KEYS.notes, notes)) {
+        resetNoteForm();
+        renderNotes();
+    }
 });
+
+
+/* ========================================
+   5. BANK SOAL KUIS
+======================================== */
+
+const quizQuestions = [
+    {
+        question: "Organ tubuh yang berfungsi memompa darah ke seluruh tubuh adalah ...",
+        options: ["Paru-paru", "Jantung", "Lambung", "Ginjal"],
+        answer: 1,
+        explanation: "Jantung memompa darah agar oksigen dan nutrisi dapat diedarkan ke seluruh tubuh."
+    },
+    {
+        question: "Hasil dari 12 × 8 adalah ...",
+        options: ["86", "92", "96", "108"],
+        answer: 2,
+        explanation: "12 dikalikan 8 sama dengan 96."
+    },
+    {
+        question: "Proses tumbuhan membuat makanan dengan bantuan cahaya disebut ...",
+        options: ["Respirasi", "Evaporasi", "Fotosintesis", "Adaptasi"],
+        answer: 2,
+        explanation: "Fotosintesis menggunakan energi cahaya untuk membantu tumbuhan membuat makanan."
+    },
+    {
+        question: "Planet tempat manusia tinggal adalah ...",
+        options: ["Mars", "Venus", "Jupiter", "Bumi"],
+        answer: 3,
+        explanation: "Bumi adalah planet tempat manusia dan berbagai makhluk hidup tinggal."
+    },
+    {
+        question: "Sinonim kata 'cerdas' adalah ...",
+        options: ["Lalai", "Pandai", "Lambat", "Lemah"],
+        answer: 1,
+        explanation: "Cerdas memiliki makna yang dekat dengan pandai atau pintar."
+    }
+];
+
+const quizContainer = $("#quiz-container");
+const startQuizButton = $("#start-quiz");
+const quizQuestionCount = $("#quiz-question-count");
+const quizScoreLabel = $("#quiz-score");
+
+let currentQuestionIndex = 0;
+let currentScore = 0;
+let quizFinished = false;
+let questionAnswered = false;
+
+function startQuiz() {
+    currentQuestionIndex = 0;
+    currentScore = 0;
+    quizFinished = false;
+    questionAnswered = false;
+
+    quizScoreLabel.textContent = "Skor: 0";
+    startQuizButton.textContent = "Mulai Ulang Kuis";
+
+    renderQuestion();
+}
+
+function renderQuestion() {
+    quizContainer.replaceChildren();
+
+    if (currentQuestionIndex >= quizQuestions.length) {
+        finishQuiz();
+        return;
+    }
+
+    questionAnswered = false;
+    const question = quizQuestions[currentQuestionIndex];
+
+    quizQuestionCount.textContent =
+        `Soal ${currentQuestionIndex + 1} dari ${quizQuestions.length}`;
+
+    const heading = createElement(
+        "h3",
+        "quiz-question",
+        question.question
+    );
+
+    const optionsContainer = createElement("div", "quiz-options");
+
+    question.options.forEach((option, index) => {
+        const button = createElement("button", "quiz-option", option);
+        button.type = "button";
+
+        button.addEventListener("click", () => {
+            if (questionAnswered) return;
+            questionAnswered = true;
+
+            const isCorrect = index === question.answer;
+
+            if (isCorrect) currentScore++;
+
+            $$(".quiz-option", optionsContainer).forEach((optionButton, optionIndex) => {
+                optionButton.disabled = true;
+
+                if (optionIndex === question.answer) {
+                    optionButton.classList.add("correct");
+                } else if (optionIndex === index && !isCorrect) {
+                    optionButton.classList.add("incorrect");
+                }
+            });
+
+            quizScoreLabel.textContent = `Skor: ${currentScore}`;
+
+            const feedback = createElement(
+                "div",
+                "quiz-feedback",
+                `${isCorrect ? "Benar!" : "Belum tepat."} ${question.explanation}`
+            );
+
+            const nextButton = createElement(
+                "button",
+                "primary-button",
+                currentQuestionIndex === quizQuestions.length - 1
+                    ? "Lihat Hasil"
+                    : "Soal Berikutnya →"
+            );
+            nextButton.type = "button";
+            nextButton.addEventListener("click", () => {
+                currentQuestionIndex++;
+                renderQuestion();
+            });
+
+            quizContainer.append(feedback, nextButton);
+        });
+
+        optionsContainer.appendChild(button);
+    });
+
+    quizContainer.append(heading, optionsContainer);
+}
+
+function finishQuiz() {
+    if (quizFinished) return;
+    quizFinished = true;
+
+    const percentage = Math.round(
+        (currentScore / quizQuestions.length) * 100
+    );
+
+    quizCount++;
+    quizProgress = percentage;
+
+    saveData(STORAGE_KEYS.quizCount, quizCount);
+    saveData(STORAGE_KEYS.quizProgress, quizProgress);
+
+    quizQuestionCount.textContent = "Kuis selesai";
+    quizScoreLabel.textContent =
+        `Skor: ${currentScore}/${quizQuestions.length}`;
+
+    quizContainer.replaceChildren();
+
+    const result = createElement("div", "quiz-result");
+    const title = createElement("h3", "", `${percentage}%`);
+    const message = createElement(
+        "p",
+        "",
+        `Kamu menjawab ${currentScore} dari ${quizQuestions.length} soal dengan benar.`
+    );
+
+    const encouragement = createElement(
+        "p",
+        "",
+        percentage >= 80
+            ? "Hebat! Pertahankan semangat belajarmu."
+            : "Terus berlatih. Baca kembali materi dan coba lagi."
+    );
+
+    result.append(title, message, encouragement);
+    quizContainer.appendChild(result);
+
+    startQuizButton.textContent = "Coba Lagi";
+    updateDashboard();
+}
+
+startQuizButton.addEventListener("click", startQuiz);
+
+
+/* ========================================
+   6. FLASHCARD
+======================================== */
+
+const flashcards = [
+    {
+        question: "Apa yang dimaksud dengan fotosintesis?",
+        answer: "Proses tumbuhan membuat makanan dengan memanfaatkan energi cahaya."
+    },
+    {
+        question: "Apa rumus luas persegi?",
+        answer: "Luas persegi = sisi × sisi."
+    },
+    {
+        question: "Apa yang dimaksud dengan gravitasi?",
+        answer: "Gaya tarik antara benda-benda yang memiliki massa."
+    }
+];
+
+const flashcardButton = $("#flashcard");
+const flashcardLabel = $("#flashcard-label");
+const flashcardText = $("#flashcard-text");
+const flashcardCount = $("#flashcard-count");
+const previousCardButton = $("#previous-card");
+const nextCardButton = $("#next-card");
+
+let currentFlashcardIndex = 0;
+let flashcardFlipped = false;
+
+function renderFlashcard() {
+    const card = flashcards[currentFlashcardIndex];
+
+    flashcardLabel.textContent =
+        flashcardFlipped ? "JAWABAN" : "PERTANYAAN";
+
+    flashcardText.textContent =
+        flashcardFlipped ? card.answer : card.question;
+
+    flashcardCount.textContent =
+        `${currentFlashcardIndex + 1} / ${flashcards.length}`;
+
+    flashcardButton.classList.toggle("is-flipped", flashcardFlipped);
+}
+
+flashcardButton.addEventListener("click", () => {
+    flashcardFlipped = !flashcardFlipped;
+    renderFlashcard();
+});
+
+previousCardButton.addEventListener("click", () => {
+    currentFlashcardIndex =
+        (currentFlashcardIndex - 1 + flashcards.length) % flashcards.length;
+    flashcardFlipped = false;
+    renderFlashcard();
+});
+
+nextCardButton.addEventListener("click", () => {
+    currentFlashcardIndex =
+        (currentFlashcardIndex + 1) % flashcards.length;
+    flashcardFlipped = false;
+    renderFlashcard();
+});
+
+
+/* ========================================
+   7. BANK PENGETAHUAN ASSISTANT
+   Berbasis kata kunci, bukan AI generatif
+======================================== */
+
+const knowledgeBase = [
+    {
+        keywords: ["fotosintesis", "tumbuhan membuat makanan"],
+        answer: "Fotosintesis adalah proses tumbuhan membuat makanan dengan bantuan cahaya. Proses ini menggunakan air dan karbon dioksida, serta menghasilkan glukosa dan oksigen."
+    },
+    {
+        keywords: ["gravitasi", "gaya tarik bumi"],
+        answer: "Gravitasi adalah gaya tarik antara benda yang memiliki massa. Gravitasi Bumi membuat benda jatuh ke tanah dan membantu menjaga planet tetap mengorbit Matahari."
+    },
+    {
+        keywords: ["belajar", "cara belajar", "tips belajar", "fokus"],
+        answer: "Cobalah belajar dalam sesi singkat, tentukan satu tujuan, jauhkan gangguan, lalu uji pemahaman dengan menjawab pertanyaan tanpa melihat catatan. Istirahat secara teratur juga membantu menjaga konsentrasi."
+    },
+    {
+        keywords: ["matematika", "rumus luas persegi", "luas persegi"],
+        answer: "Luas persegi dihitung dengan rumus sisi × sisi. Contoh: jika panjang sisi 4 cm, luasnya adalah 4 × 4 = 16 cm²."
+    },
+    {
+        keywords: ["jantung", "peredaran darah"],
+        answer: "Jantung adalah organ yang memompa darah ke paru-paru dan seluruh tubuh. Darah membawa oksigen serta nutrisi yang dibutuhkan oleh sel."
+    },
+    {
+        keywords: ["planet", "tata surya"],
+        answer: "Tata surya terdiri dari Matahari dan benda-benda langit yang terikat oleh gravitasinya, termasuk delapan planet yang mengorbit Matahari."
+    },
+    {
+        keywords: ["halo", "hai", "hello", "assalamualaikum"],
+        answer: "Halo! Senang bisa menemanimu belajar. Kamu bisa bertanya tentang fotosintesis, gravitasi, matematika dasar, atau tips belajar."
+    }
+];
+
+function getAssistantAnswer(question) {
+    const normalizedQuestion = question
+        .toLocaleLowerCase("id-ID")
+        .replace(/[?!.,;:]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    if (!normalizedQuestion) {
+        return "Silakan tuliskan pertanyaan terlebih dahulu.";
+    }
+
+    let bestMatch = null;
+    let highestScore = 0;
+
+    knowledgeBase.forEach((item) => {
+        let score = 0;
+
+        item.keywords.forEach((keyword) => {
+            const normalizedKeyword = keyword.toLocaleLowerCase("id-ID");
+
+            if (normalizedQuestion.includes(normalizedKeyword)) {
+                // Frasa yang lebih spesifik mendapat bobot lebih tinggi.
+                score = Math.max(score, normalizedKeyword.length);
+            }
+        });
+
+        if (score > highestScore) {
+            highestScore = score;
+            bestMatch = item;
+        }
+    });
+
+    if (bestMatch) return bestMatch.answer;
+
+    return "Maaf, aku belum menemukan materi yang cocok dengan pertanyaanmu. Coba gunakan kata kunci seperti fotosintesis, gravitasi, matematika, jantung, atau tips belajar.";
+}
+
+
+/* ========================================
+   8. TAMPILKAN PESAN CHAT DENGAN AMAN
+======================================== */
+
+const chatForm = $("#chat-form");
+const chatInput = $("#chat-input");
+const chatMessages = $("#chat-messages");
+
+function addChatMessage(message, sender) {
+    const messageElement = createElement(
+        "div",
+        `chat-message ${sender === "user" ? "user-message" : "assistant-message"}`
+    );
+
+    const paragraph = createElement("p", "", message);
+
+    // Menggunakan textContent agar teks pengguna tidak diperlakukan sebagai HTML.
+    messageElement.appendChild(paragraph);
+    chatMessages.appendChild(messageElement);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function sendAssistantQuestion(question) {
+    const trimmedQuestion = question.trim();
+    if (!trimmedQuestion) return;
+
+    addChatMessage(trimmedQuestion, "user");
+
+    const answer = getAssistantAnswer(trimmedQuestion);
+    addChatMessage(answer, "assistant");
+}
+
+chatForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const question = chatInput.value;
+    if (!question.trim()) return;
+
+    sendAssistantQuestion(question);
+    chatInput.value = "";
+    chatInput.focus();
+});
+
+$$(".suggestion-chip").forEach((button) => {
+    button.addEventListener("click", () => {
+        const question = button.dataset.question;
+        sendAssistantQuestion(question);
+    });
+});
+
+
+/* ========================================
+   9. STATISTIK DASHBOARD
+======================================== */
+
+function updateDashboard() {
+    const totalNotesElement = $("#total-notes");
+    const totalQuizzesElement = $("#total-quizzes");
+    const totalMaterialsElement = $("#total-materials");
+    const learningProgressElement = $("#learning-progress");
+
+    if (totalNotesElement) {
+        totalNotesElement.textContent = String(notes.length);
+    }
+
+    if (totalQuizzesElement) {
+        totalQuizzesElement.textContent = String(quizCount);
+    }
+
+    if (totalMaterialsElement) {
+        totalMaterialsElement.textContent = String(knowledgeBase.length);
+    }
+
+    if (learningProgressElement) {
+        learningProgressElement.textContent = `${quizProgress}%`;
+    }
+}
+
+
+/* ========================================
+   10. INISIALISASI WEBSITE
+======================================== */
+
+function initializeStudyMate() {
+    renderNotes();
+    renderFlashcard();
+    updateDashboard();
+    showPage("dashboard");
+}
+
+initializeStudyMate();
