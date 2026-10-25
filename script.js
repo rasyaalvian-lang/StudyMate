@@ -258,30 +258,35 @@ const quizQuestions = [
     },
     {
         // ===== IPA (1-5) =====
+        subject : "IPA",
         question: "Organ tubuh manusia yang berfungsi memompa darah adalah ...",
         options: ["Paru-paru", "Jantung", "Hati", "Ginjal"],
         answer: 1,
         explanation: "Jantung berfungsi memompa darah ke seluruh tubuh."
     },
     {
+        subject : "IPA",
         question: "Perubahan air menjadi uap air disebut ...",
         options: ["Membeku", "Mencair", "Menguap", "Mengembun"],
         answer: 2,
         explanation: "Menguap adalah perubahan wujud zat cair menjadi gas."
     },
     {
+        subject : "IPA",
         question: "Sumber energi utama bagi Bumi adalah ...",
         options: ["Bulan", "Matahari", "Angin", "Batu bara"],
         answer: 1,
         explanation: "Matahari memberikan cahaya dan panas yang mendukung kehidupan di Bumi."
     },
     {
+        subject : "IPA",
         question: "Gas yang dibutuhkan manusia untuk bernapas adalah ...",
         options: ["Nitrogen", "Karbon dioksida", "Oksigen", "Hidrogen"],
         answer: 2,
         explanation: "Manusia membutuhkan oksigen untuk proses respirasi."
     },
     {
+        subject : "IPA",
         question: "Hubungan antara lebah dan bunga yang saling menguntungkan disebut ...",
         options: ["Parasitisme", "Komensalisme", "Mutualisme", "Predasi"],
         answer: 2,
@@ -289,30 +294,35 @@ const quizQuestions = [
     },
     {
         // ===== IPS (6-10) =====
+        subject : "IPS",
         question: "Kegiatan menghasilkan barang atau jasa disebut ...",
         options: ["Konsumsi", "Produksi", "Distribusi", "Investasi"],
         answer: 1,
         explanation: "Produksi adalah kegiatan menghasilkan atau menambah nilai guna barang dan jasa."
     },
     {
+        subject : "IPS",
         question: "Garis khayal yang membagi Bumi menjadi belahan utara dan selatan adalah ...",
         options: ["Garis bujur", "Garis lintang", "Garis khatulistiwa", "Garis tanggal"],
         answer: 2,
         explanation: "Garis khatulistiwa membagi Bumi menjadi belahan utara dan selatan."
     },
     {
+        subject : "IPS",
         question: "ASEAN didirikan pada tahun ...",
         options: ["1945", "1955", "1967", "1975"],
         answer: 2,
         explanation: "ASEAN didirikan pada 8 Agustus 1967 melalui Deklarasi Bangkok."
     },
     {
+        subject : "IPS",
         question: "Kegiatan menyalurkan barang dari produsen kepada konsumen disebut ...",
         options: ["Produksi", "Distribusi", "Konsumsi", "Eksplorasi"],
         answer: 1,
         explanation: "Distribusi adalah kegiatan menyalurkan barang atau jasa kepada konsumen."
     },
     {
+        subject : "IPS",
         question: "Organisasi yang menjadi dasar berdirinya ASEAN dibentuk oleh negara-negara di kawasan ...",
         options: ["Asia Tenggara", "Asia Timur", "Eropa Barat", "Amerika Selatan"],
         answer: 0,
@@ -320,30 +330,35 @@ const quizQuestions = [
     },
     {
         // ===== MATEMATIKA (11-15) =====
+        subject : "MATEMATIKA",
         question: "Hasil dari 15 × 6 adalah ...",
         options: ["80", "85", "90", "95"],
         answer: 2,
         explanation: "15 × 6 = 90."
     },
     {
+        subject : "MATEMATIKA",
         question: "Hasil dari 144 ÷ 12 adalah ...",
         options: ["10", "11", "12", "14"],
         answer: 2,
         explanation: "144 dibagi 12 sama dengan 12."
     },
     {
+        subject : "MATEMATIKA",
         question: "Jika x + 7 = 15, nilai x adalah ...",
         options: ["6", "7", "8", "9"],
         answer: 2,
         explanation: "Kurangi kedua ruas dengan 7: x = 15 - 7 = 8."
     },
     {
+        subject : "MATEMATIKA",
         question: "Luas persegi dengan panjang sisi 9 cm adalah ...",
         options: ["18 cm²", "36 cm²", "72 cm²", "81 cm²"],
         answer: 3,
         explanation: "Luas persegi = sisi × sisi = 9 × 9 = 81 cm²."
     },
     {
+        subject : "MATEMATIKA",
         question: "Hasil dari 3/4 + 1/4 adalah ...",
         options: ["1/2", "1", "1 1/2", "2"],
         answer: 1,
@@ -351,31 +366,36 @@ const quizQuestions = [
     },
     {
         // ===== BAHASA INGGRIS (16-20) =====
+        subject : "BAHASA INGGRIS",
         question: 'What is the English word for "buku"?',
         options: ["Pen", "Table", "Book", "Chair"],
         answer: 2,
         explanation: '"Buku" dalam bahasa Inggris adalah "book".'
     },
     {
+        subject : "BAHASA INGGRIS",
         question: 'Choose the correct sentence: "Saya seorang siswa."',
         options: ["I are a student.","I am a student.","I is a student.",
-              "I be a student."],
+                  "I be a student."],
         answer: 1,
         explanation: '"I am a student" berarti "Saya seorang siswa."'
     },
     {
+        subject : "BAHASA INGGRIS",
         question: 'What is the past tense of "go"?',
         options: ["Goed", "Going", "Goes", "Went"],
         answer: 3,
         explanation: 'Bentuk lampau (simple past) dari "go" adalah "went".'
     },
     {
+        subject : "BAHASA INGGRIS",
         question: 'What is the opposite of "big"?',
         options: ["Tall", "Small", "Long", "Wide"],
         answer: 1,
         explanation: '"Small" berarti kecil dan merupakan lawan kata "big" (besar).'
     },
     {
+        subject : "BAHASA INGGRIS",
         question: 'Complete the sentence: "She ___ a student."',
         options: ["am", "are", "is", "be"],
         answer: 2,
@@ -393,11 +413,38 @@ let currentScore = 0;
 let quizFinished = false;
 let questionAnswered = false;
 
+
 function startQuiz() {
+    const subjectSelect = document.querySelector("#quiz-subject");
+    const selectedSubject = subjectSelect
+        ? subjectSelect.value
+        : "campuran";
+
+    // Ambil soal sesuai mata pelajaran yang dipilih
+    let filteredQuestions;
+
+    if (selectedSubject === "campuran") {
+        filteredQuestions = quizQuestions;
+    } else {
+        filteredQuestions = quizQuestions.filter(
+            (question) => question.subject === selectedSubject
+        );
+    }
+
+    // Periksa apakah soal tersedia
+    if (filteredQuestions.length === 0) {
+        alert("Belum ada soal untuk mata pelajaran ini.");
+        return;
+    }
+
+    // Mulai kuis
     currentQuestionIndex = 0;
     currentScore = 0;
     quizFinished = false;
     questionAnswered = false;
+
+    // Simpan soal yang dipilih untuk sesi kuis ini
+    window.currentQuizQuestions = filteredQuestions;
 
     quizScoreLabel.textContent = "Skor: 0";
     startQuizButton.textContent = "Mulai Ulang Kuis";
@@ -405,19 +452,23 @@ function startQuiz() {
     renderQuestion();
 }
 
+
 function renderQuestion() {
     quizContainer.replaceChildren();
 
-    if (currentQuestionIndex >= quizQuestions.length) {
+    const activeQuestions = window.currentQuizQuestions || quizQuestions;
+      if (currentQuestionIndex >= activeQuestions.length) {
         finishQuiz();
         return;
     }
 
     questionAnswered = false;
-    const question = quizQuestions[currentQuestionIndex];
+    
+    const question = activeQuestions[currentQuestionIndex];
 
+    
     quizQuestionCount.textContent =
-        `Soal ${currentQuestionIndex + 1} dari ${quizQuestions.length}`;
+          `Soal ${currentQuestionIndex + 1} dari ${activeQuestions.length}`;
 
     const heading = createElement(
         "h3",
@@ -484,7 +535,8 @@ function finishQuiz() {
     quizFinished = true;
 
     const percentage = Math.round(
-        (currentScore / quizQuestions.length) * 100
+        (window.currentQuizQuestions || quizQuestions).length
+
     );
 
     quizCount++;
