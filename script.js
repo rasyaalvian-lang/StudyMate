@@ -1,6 +1,6 @@
 
 /* ========================================
-   STUDYMATE AI - SCRIPT.JS
+   STUDYMATE - SCRIPT.JS
    Interaksi website tanpa API dan database
 ======================================== */
 
@@ -256,6 +256,139 @@ const quizQuestions = [
         answer: 1,
         explanation: "Cerdas memiliki makna yang dekat dengan pandai atau pintar."
     }
+    
+{
+    // ===== IPA (1-5) =====
+    question: "Organ tubuh manusia yang berfungsi memompa darah adalah ...",
+    options: ["Paru-paru", "Jantung", "Hati", "Ginjal"],
+    answer: 1,
+    explanation: "Jantung berfungsi memompa darah ke seluruh tubuh."
+},
+{
+    question: "Perubahan air menjadi uap air disebut ...",
+    options: ["Membeku", "Mencair", "Menguap", "Mengembun"],
+    answer: 2,
+    explanation: "Menguap adalah perubahan wujud zat cair menjadi gas."
+},
+{
+    question: "Sumber energi utama bagi Bumi adalah ...",
+    options: ["Bulan", "Matahari", "Angin", "Batu bara"],
+    answer: 1,
+    explanation: "Matahari memberikan cahaya dan panas yang mendukung kehidupan di Bumi."
+},
+{
+    question: "Gas yang dibutuhkan manusia untuk bernapas adalah ...",
+    options: ["Nitrogen", "Karbon dioksida", "Oksigen", "Hidrogen"],
+    answer: 2,
+    explanation: "Manusia membutuhkan oksigen untuk proses respirasi."
+},
+{
+    question: "Hubungan antara lebah dan bunga yang saling menguntungkan disebut ...",
+    options: ["Parasitisme", "Komensalisme", "Mutualisme", "Predasi"],
+    answer: 2,
+    explanation: "Lebah memperoleh nektar, sedangkan bunga terbantu proses penyerbukannya."
+},
+
+{
+    // ===== IPS (6-10) =====
+    question: "Kegiatan menghasilkan barang atau jasa disebut ...",
+    options: ["Konsumsi", "Produksi", "Distribusi", "Investasi"],
+    answer: 1,
+    explanation: "Produksi adalah kegiatan menghasilkan atau menambah nilai guna barang dan jasa."
+},
+{
+    question: "Garis khayal yang membagi Bumi menjadi belahan utara dan selatan adalah ...",
+    options: ["Garis bujur", "Garis lintang", "Garis khatulistiwa", "Garis tanggal"],
+    answer: 2,
+    explanation: "Garis khatulistiwa membagi Bumi menjadi belahan utara dan selatan."
+},
+{
+    question: "ASEAN didirikan pada tahun ...",
+    options: ["1945", "1955", "1967", "1975"],
+    answer: 2,
+    explanation: "ASEAN didirikan pada 8 Agustus 1967 melalui Deklarasi Bangkok."
+},
+{
+    question: "Kegiatan menyalurkan barang dari produsen kepada konsumen disebut ...",
+    options: ["Produksi", "Distribusi", "Konsumsi", "Eksplorasi"],
+    answer: 1,
+    explanation: "Distribusi adalah kegiatan menyalurkan barang atau jasa kepada konsumen."
+},
+{
+    question: "Organisasi yang menjadi dasar berdirinya ASEAN dibentuk oleh negara-negara di kawasan ...",
+    options: ["Asia Tenggara", "Asia Timur", "Eropa Barat", "Amerika Selatan"],
+    answer: 0,
+    explanation: "ASEAN merupakan organisasi kerja sama negara-negara di kawasan Asia Tenggara."
+},
+
+{
+    // ===== MATEMATIKA (11-15) =====
+    question: "Hasil dari 15 × 6 adalah ...",
+    options: ["80", "85", "90", "95"],
+    answer: 2,
+    explanation: "15 × 6 = 90."
+},
+{
+    question: "Hasil dari 144 ÷ 12 adalah ...",
+    options: ["10", "11", "12", "14"],
+    answer: 2,
+    explanation: "144 dibagi 12 sama dengan 12."
+},
+{
+    question: "Jika x + 7 = 15, nilai x adalah ...",
+    options: ["6", "7", "8", "9"],
+    answer: 2,
+    explanation: "Kurangi kedua ruas dengan 7: x = 15 - 7 = 8."
+},
+{
+    question: "Luas persegi dengan panjang sisi 9 cm adalah ...",
+    options: ["18 cm²", "36 cm²", "72 cm²", "81 cm²"],
+    answer: 3,
+    explanation: "Luas persegi = sisi × sisi = 9 × 9 = 81 cm²."
+},
+{
+    question: "Hasil dari 3/4 + 1/4 adalah ...",
+    options: ["1/2", "1", "1 1/2", "2"],
+    answer: 1,
+    explanation: "Penyebutnya sama, jadi 3/4 + 1/4 = 4/4 = 1."
+},
+
+{
+    // ===== BAHASA INGGRIS (16-20) =====
+    question: 'What is the English word for "buku"?',
+    options: ["Pen", "Table", "Book", "Chair"],
+    answer: 2,
+    explanation: '"Buku" dalam bahasa Inggris adalah "book".'
+},
+{
+    question: 'Choose the correct sentence: "Saya seorang siswa."',
+    options: [
+        "I are a student.",
+        "I am a student.",
+        "I is a student.",
+        "I be a student."
+    ],
+    answer: 1,
+    explanation: '"I am a student" berarti "Saya seorang siswa."'
+},
+{
+    question: 'What is the past tense of "go"?',
+    options: ["Goed", "Going", "Goes", "Went"],
+    answer: 3,
+    explanation: 'Bentuk lampau (simple past) dari "go" adalah "went".'
+},
+{
+    question: 'What is the opposite of "big"?',
+    options: ["Tall", "Small", "Long", "Wide"],
+    answer: 1,
+    explanation: '"Small" berarti kecil dan merupakan lawan kata "big" (besar).'
+},
+{
+    question: 'Complete the sentence: "She ___ a student."',
+    options: ["am", "are", "is", "be"],
+    answer: 2,
+    explanation: 'Subjek "she" menggunakan "is" dalam simple present tense.'
+}
 ];
 
 const quizContainer = $("#quiz-container");
