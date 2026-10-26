@@ -4,7 +4,7 @@
    Desain profesional, responsif, dan bersih
 ======================================== */
 
-/* 1. RESET DAN VARIABEL WARNA */
+/* 1. RESET DAN VARIABEL WARNA (MODIFIKASI) */
 :root {
     --navy: #172554;
     --navy-light: #223568;
@@ -470,7 +470,7 @@ button:disabled {
     font-size: 12px;
 }
 
-/* 8. KARTU STATISTIK */
+/* 8. KARTU STATISTIK (MODIFIKASI)*/
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
