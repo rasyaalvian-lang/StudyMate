@@ -511,9 +511,9 @@ function renderQuestion() {
             const nextButton = createElement(
                 "button",
                 "primary-button",
-                currentQuestionIndex === quizQuestions.length - 1
-                    ? "Lihat Hasil"
-                    : "Soal Berikutnya →"
+               currentQuestionIndex === activeQuestions.length - 1
+                ? "Lihat Hasil"
+                : "Soal Berikutnya →"
             );
             nextButton.type = "button";
             nextButton.addEventListener("click", () => {
