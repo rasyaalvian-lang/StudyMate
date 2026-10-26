@@ -530,14 +530,21 @@ function renderQuestion() {
     quizContainer.append(heading, optionsContainer);
 }
 
+
 function finishQuiz() {
     if (quizFinished) return;
     quizFinished = true;
 
-    const percentage = Math.round(
-        (window.currentQuizQuestions || quizQuestions).length
+    // Gunakan jumlah soal sesuai mata pelajaran yang dipilih
+    const activeQuestions =
+        window.currentQuizQuestions || quizQuestions;
 
-    );
+    const totalQuestions = activeQuestions.length;
+
+    // Hitung persentase berdasarkan soal yang dikerjakan
+    const percentage = totalQuestions > 0
+        ? Math.round((currentScore / totalQuestions) * 100)
+        : 0;
 
     quizCount++;
     quizProgress = percentage;
@@ -547,16 +554,17 @@ function finishQuiz() {
 
     quizQuestionCount.textContent = "Kuis selesai";
     quizScoreLabel.textContent =
-        `Skor: ${currentScore}/${quizQuestions.length}`;
+        `Skor: ${currentScore}/${totalQuestions}`;
 
     quizContainer.replaceChildren();
 
     const result = createElement("div", "quiz-result");
     const title = createElement("h3", "", `${percentage}%`);
+
     const message = createElement(
         "p",
         "",
-        `Kamu menjawab ${currentScore} dari ${quizQuestions.length} soal dengan benar.`
+        `Kamu menjawab ${currentScore} dari ${totalQuestions} soal dengan benar.`
     );
 
     const encouragement = createElement(
