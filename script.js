@@ -806,3 +806,107 @@ function initializeStudyMate() {
 }
 
 initializeStudyMate();
+
+// Background partikel digital StudyMate
+const canvas = document.getElementById("particles-bg");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+let animationId;
+
+function resizeCanvas() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Batasi jumlah partikel agar tetap ringan
+    const total = Math.min(
+        45,
+        Math.floor(window.innerWidth / 25)
+    );
+
+    particles = Array.from({ length: total }, () => ({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        radius: Math.random() * 2 + 1,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: (Math.random() - 0.5) * 0.5
+    }));
+}
+
+function drawParticles() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > window.innerWidth) {
+            p.speedX *= -1;
+        }
+
+        if (p.y < 0 || p.y > window.innerHeight) {
+            p.speedY *= -1;
+        }
+
+        // Titik cahaya
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(91, 108, 255, 0.45)";
+        ctx.fill();
+
+        // Garis tipis antartitik yang berdekatan
+        for (let j = i + 1; j < particles.length; j++) {
+            const other = particles[j];
+            const dx = p.x - other.x;
+            const dy = p.y - other.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 110) {
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(other.x, other.y);
+
+                ctx.strokeStyle =
+                    `rgba(111, 92, 255, ${0.12 * (1 - distance / 110)})`;
+
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+    }
+
+    animationId = requestAnimationFrame(drawParticles);
+}
+
+const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+);
+
+function startParticles() {
+    cancelAnimationFrame(animationId);
+
+    if (reduceMotion.matches) {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        return;
+    }
+
+    drawParticles();
+}
+
+resizeCanvas();
+startParticles();
+
+window.addEventListener("resize", () => {
+    resizeCanvas();
+});
+
+reduceMotion.addEventListener("change", startParticles);
