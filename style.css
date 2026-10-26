@@ -1434,4 +1434,38 @@ button:disabled {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-}
+      }
+      /* Background bergerak StudyMate */
+      body {
+          background: linear-gradient(
+              -45deg,
+              #f5f7fc,
+              #e8edff,
+              #f0eaff,
+              #edf5ff
+          );
+          background-size: 400% 400%;
+          animation: studyMateBackground 18s ease infinite;
+      }
+      
+      @keyframes studyMateBackground {
+          0% {
+              background-position: 0% 50%;
+          }
+      
+          50% {
+              background-position: 100% 50%;
+          }
+      
+          100% {
+              background-position: 0% 50%;
+          }
+      }
+      
+      /* Hormati pengaturan pengguna yang mengurangi animasi */
+      @media (prefers-reduced-motion: reduce) {
+          body {
+              animation: none;
+              background-position: center;
+          }
+      }
