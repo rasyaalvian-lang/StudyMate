@@ -10,6 +10,7 @@
    1. FUNGSI PENYIMPANAN LOCALSTORAGE
 ======================================== */
 
+/* MODIFIKASI */
 const STORAGE_KEYS = {
     notes: "studymate_notes",
     quizCount: "studymate_quiz_count",
