@@ -1462,3 +1462,167 @@ button:disabled {
         display: none;
     }
 }
+/* ==================================
+   POPUP AKUN STUDYMATE
+   Tambahan baru - CSS lama dipertahankan
+================================== */
+
+.user-profile {
+    cursor: pointer;
+}
+
+.user-profile:focus-visible {
+    outline: 2px solid #7167ff;
+    outline-offset: 5px;
+    border-radius: 10px;
+}
+
+.auth-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(12, 16, 35, 0.68);
+    backdrop-filter: blur(7px);
+}
+
+.auth-overlay.is-open {
+    display: flex;
+}
+
+.auth-modal {
+    position: relative;
+    width: min(100%, 420px);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 32px;
+    border: 1px solid rgba(125, 125, 180, 0.2);
+    border-radius: 22px;
+    background: #fff;
+    color: #20243a;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25);
+}
+
+.auth-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 50%;
+    background: #f1f2f8;
+    color: #30344b;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.auth-heading {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.auth-logo {
+    display: grid;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 14px;
+    place-items: center;
+    border-radius: 17px;
+    background: #6c63ff;
+    color: white;
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.auth-heading h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.auth-heading p {
+    margin: 0;
+    color: #70758a;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.auth-field {
+    display: grid;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+.auth-field label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px 14px;
+    border: 1px solid #dfe2ee;
+    border-radius: 11px;
+    background: #fff;
+    color: #20243a;
+    font: inherit;
+}
+
+.auth-field input:focus {
+    border-color: #7167ff;
+    outline: 2px solid rgba(113, 103, 255, 0.15);
+}
+
+.auth-submit {
+    width: 100%;
+    margin-top: 8px;
+}
+
+.auth-message {
+    min-height: 18px;
+    margin: 8px 0;
+    color: #b42318;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.auth-message.success {
+    color: #18794e;
+}
+
+.auth-switch {
+    margin: 20px 0 0;
+    color: #70758a;
+    font-size: 14px;
+    text-align: center;
+}
+
+.auth-switch button {
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    color: #6258e8;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#account-panel {
+    text-align: center;
+}
+
+#account-email {
+    overflow-wrap: anywhere;
+    color: #62677c;
+}
+
+@media (max-width: 480px) {
+    .auth-modal {
+        padding: 28px 20px;
+    }
+}
