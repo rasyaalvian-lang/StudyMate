@@ -15,9 +15,15 @@
 
     <!-- Menghubungkan file CSS -->
     <link rel="stylesheet" href="style.css">
+    
+    <!-- Library Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <!-- Menghubungkan file JavaScript -->
     <script src="script.js" defer></script>
+
+    <!-- JavaScript khusus login -->
+<script src="auth.js" defer></script>
 </head>
 
 <body>
@@ -81,13 +87,20 @@
                 <h1>Study Dashboard</h1>
             </div>
 
-            <div class="user-profile">
-                <div class="user-avatar">P</div>
-                <div class="user-info">
-                    <h3>Pelajar</h3>
-                    <p>Student Account</p>
-                </div>
+         <div
+            class="user-profile"
+            id="account-trigger"
+            role="button"
+            tabindex="0"
+            aria-label="Buka akun siswa"
+        >
+            <div class="user-avatar" id="account-avatar">S</div>
+        
+            <div class="user-info">
+                <h3 id="account-name">Pelajar</h3>
+                <p id="account-status">Student Account · Klik untuk masuk</p>
             </div>
+        </div>
         </header>
 
         <!-- DASHBOARD -->
@@ -444,5 +457,91 @@
             </p>
         </footer>
     </main>
+    <!-- POPUP LOGIN STUDYMATE -->
+<div
+    class="auth-overlay"
+    id="auth-modal"
+    aria-hidden="true"
+>
+    <section
+        class="auth-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="auth-title"
+    >
+        <button
+            class="auth-close"
+            id="auth-close"
+            type="button"
+            aria-label="Tutup popup"
+        >×</button>
+
+        <div class="auth-heading">
+            <div class="auth-logo">S</div>
+            <h2 id="auth-title">Selamat datang!</h2>
+            <p id="auth-description">
+                Masuk untuk menyimpan aktivitas belajarmu.
+            </p>
+        </div>
+
+        <form id="auth-form">
+            <div class="auth-field" id="auth-name-field" hidden>
+                <label for="auth-name">Nama siswa</label>
+                <input
+                    id="auth-name"
+                    type="text"
+                    maxlength="60"
+                    autocomplete="name"
+                    placeholder="Nama kamu"
+                >
+            </div>
+
+            <div class="auth-field">
+                <label for="auth-email">Email</label>
+                <input
+                    id="auth-email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="nama@email.com"
+                    required
+                >
+            </div>
+
+            <div class="auth-field">
+                <label for="auth-password">Password</label>
+                <input
+                    id="auth-password"
+                    type="password"
+                    minlength="8"
+                    autocomplete="current-password"
+                    placeholder="Minimal 8 karakter"
+                    required
+                >
+            </div>
+
+            <p id="auth-message" class="auth-message" aria-live="polite"></p>
+
+            <button
+                class="primary-button auth-submit"
+                id="auth-submit"
+                type="submit"
+            >Masuk</button>
+        </form>
+
+        <p class="auth-switch">
+            Belum punya akun?
+            <button id="auth-toggle" type="button">Daftar</button>
+        </p>
+
+        <div id="account-panel" hidden>
+            <p id="account-email"></p>
+            <button
+                class="primary-button auth-submit"
+                id="auth-logout"
+                type="button"
+            >Keluar dari akun</button>
+        </div>
+    </section>
+</div>
 </body>
 </html>
