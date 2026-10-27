@@ -107,8 +107,6 @@ function showPage(pageId) {
         breadcrumbElement.textContent = pageInfo.breadcrumb;
     }
 
-    });
-
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
