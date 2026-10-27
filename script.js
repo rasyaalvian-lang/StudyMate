@@ -74,15 +74,39 @@ function showPage(pageId) {
         page.hidden = !isActive;
     });
 
-    $$(".nav-link").forEach((button) => {
-        const isActive = button.dataset.page === pageId;
-        button.classList.toggle("active", isActive);
-
-        if (isActive) {
-            button.setAttribute("aria-current", "page");
-        } else {
-            button.removeAttribute("aria-current");
+    // Perbarui judul halaman dan breadcrumb (+)
+    const pageTitles = {
+        dashboard: {
+            title: "Study Dashboard",
+            breadcrumb: "Workspace / Belajar"
+        },
+        notes: {
+            title: "Catatan Saya",
+            breadcrumb: "Workspace / Catatan"
+        },
+        quiz: {
+            title: "Kuis Interaktif",
+            breadcrumb: "Workspace / Kuis"
+        },
+        flashcards: {
+            title: "Flashcard",
+            breadcrumb: "Workspace / Flashcard"
+        },
+        assistant: {
+            title: "StudyMate Assistant",
+            breadcrumb: "Workspace / Asisten"
         }
+    };
+
+    const pageInfo = pageTitles[pageId];
+    const titleElement = document.getElementById("page-title");
+    const breadcrumbElement = document.getElementById("page-breadcrumb");
+
+    if (pageInfo && titleElement && breadcrumbElement) {
+        titleElement.textContent = pageInfo.title;
+        breadcrumbElement.textContent = pageInfo.breadcrumb;
+    }
+
     });
 
     window.scrollTo({ top: 0, behavior: "smooth" });
