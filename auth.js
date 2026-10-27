@@ -192,13 +192,15 @@ authForm.addEventListener("submit", async (event) => {
     const email = authEmail.value.trim();
     const password = authPassword.value;
 
-    if (
-        SUPABASE_URL.includes("https://fuftlfvhzqwjdziexsno.supabase.co") ||
-        SUPABASE_PUBLISHABLE_KEY.includes("sb_publishable_OxF77uQMvrNOBOIXEslDvw_gK3HUX5A")
-    ) {
-        showAuthMessage("Isi konfigurasi Supabase terlebih dahulu.");
-        return;
-    }
+   
+   if (
+       SUPABASE_URL.includes("TEMPEL_") ||
+       SUPABASE_PUBLISHABLE_KEY.includes("TEMPEL_")
+   ) {
+       showAuthMessage("Isi konfigurasi Supabase terlebih dahulu.");
+       return;
+   }
+
 
     authSubmit.disabled = true;
     authSubmit.textContent = "Memproses...";
